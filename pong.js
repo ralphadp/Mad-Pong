@@ -5,8 +5,8 @@ var ballWidth=10;
 var lastKey1=0;
 var lastKey2=0;
 var dezX=random(10), dezY=(-1)*random(10);
-var player1=new Rectangle(20,200,10,80);
-var player2=new Rectangle(770,200,10,80);
+var player1=new Rectangle(20,200,10,80,001);
+var player2=new Rectangle(770,200,10,80,002);
 var pongBall=new Rectangle(680,200,ballWidth,ballWidth);
 
 function init(){
@@ -112,21 +112,28 @@ document.addEventListener('keydown',player1movement,true);
 document.addEventListener('keydown',player2movement,true);
 
 
-function Rectangle(x,y,width,height){
+function Rectangle(x,y,width,height,id){
+ this.id=id;
  this.score=0;
  this.x=(x==null)?0:x;
  this.y=(y==null)?0:y;
  this.width=(width==null)?0:width;
  this.height=(height==null)?this.width:height;
 
- this.intersects=function(rect){
-  if(rect!=null){
-   return(this.x<rect.x+rect.width&&
-    this.x+this.width>rect.x&&
-    this.y<rect.y+rect.height&&
-    this.y+this.height>rect.y);
-  }
+ this.intersects=function(ball){
+   var ping=false;  
+   if(ball!=null){
+	  if(this.id==1){
+		 ping = this.x+this.width  >= ball.x &&
+			this.y < ball.y+ball.height &&
+		    this.y+this.height > ball.y;
+     } else if(this.id==2){
+    	 ping = this.x <= ball.x+ball.width &&
+			this.y < ball.y+ball.height &&
+		    this.y+this.height > ball.y;
+     }
+   }
+   return ping; 
  }
-
 
 }
